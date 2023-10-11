@@ -1,1 +1,1 @@
-# sd-jwt-demo
+# GX Credentials: SD-JWT Demo

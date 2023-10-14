@@ -4,7 +4,7 @@ import {
 } from "@/api_queries/verify";
 import { useGlobalContext } from "@/context/globalContext";
 import { decodeHeader, decodeKBJWT, decodePayload } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Card,
   CardContent,
@@ -16,6 +16,17 @@ import { Label } from "../ui/label";
 import { ScrollArea } from "../ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Textarea } from "../ui/textarea";
+import { Graph } from "jsoncrack-react";
+import JsonGraphDialog from "../dialogs/jsonGraphDialog";
+import { Button } from "react-day-picker";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "../ui/dialog";
 
 const VerifyTab = () => {
   const {
@@ -39,6 +50,7 @@ const VerifyTab = () => {
   const [decodedKBJWTHeader, setDecodedKBJWTHeader] = useState("");
   const [decodedKBJWTPayload, setDecodedKBJWTPayload] = useState("");
   const [isHolderKB, _] = useState(holderPubKey && holderPubKey !== pubKey);
+  const graphRef = useRef();
 
   const { mutateAsync: verifySDJWTVC } = useVerifySDJWTVC();
   const { mutateAsync: verifySDJWTVCwithKB } = useVerifySDJWTVCwithKBJWT();
@@ -53,11 +65,7 @@ const VerifyTab = () => {
 
   useEffect(() => {
     if (keyBindingJWT) {
-      console.log(keyBindingJWT);
-      console.log("triggered");
       const decodedKBJWT = decodeKBJWT(keyBindingJWT);
-      console.log(decodedKBJWT.header!);
-      console.log(decodedKBJWT.payload!);
       setDecodedKBJWTHeader(decodedKBJWT.header!);
       setDecodedKBJWTPayload(decodedKBJWT.payload!);
     }
@@ -237,9 +245,12 @@ const VerifyTab = () => {
           <TabsContent value="payload">
             <Card>
               <CardHeader>
-                <div className="flex items-baseline space-x-2">
-                  <CardTitle>Payload</CardTitle>
-                  <CardDescription>The entire SD-JWT Payload</CardDescription>
+                <div className="flex justify-between">
+                  <div className="flex items-baseline space-x-2">
+                    <CardTitle>Payload</CardTitle>
+                    <CardDescription>The entire SD-JWT Payload</CardDescription>
+                  </div>
+                  <JsonGraphDialog jwt={decodedPayload} title="Payload" />
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -255,11 +266,18 @@ const VerifyTab = () => {
           <TabsContent value="sdclaims">
             <Card>
               <CardHeader>
-                <div className="flex items-baseline space-x-2">
-                  <CardTitle>SD Claims</CardTitle>
-                  <CardDescription>
-                    Selectively (un)disclosable claims from the payload
-                  </CardDescription>
+                <div className="flex justify-between">
+                  <div className="flex items-baseline space-x-2">
+                    <CardTitle>SD Claims</CardTitle>
+                    <CardDescription>
+                      Selectively (un)disclosable claims from the payload
+                    </CardDescription>
+                  </div>
+                  <JsonGraphDialog
+                    jwt={sdMap}
+                    title="Selective Disclosure"
+                    description="Selectively (un)disclosable claims from the payload"
+                  />
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">

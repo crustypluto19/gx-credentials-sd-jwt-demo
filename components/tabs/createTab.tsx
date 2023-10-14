@@ -3,7 +3,7 @@ import { decodePayload } from "@/lib/utils";
 import { sampleDisclosures, samplePayload } from "@/sample/sample";
 import { useContext } from "react";
 import GenerateForm from "../forms/generateForm";
-import PresentationDialog from "../presentDialog";
+import PresentationDialog from "../dialogs/presentDialog";
 import {
   Card,
   CardContent,
@@ -14,6 +14,7 @@ import {
 import { Label } from "../ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Textarea } from "../ui/textarea";
+import JsonGraphDialog from "../dialogs/jsonGraphDialog";
 
 const CreateTab = () => {
   const {
@@ -184,9 +185,12 @@ const CreateTab = () => {
           <TabsContent value="payload">
             <Card>
               <CardHeader>
-                <div className="flex items-baseline space-x-2">
-                  <CardTitle>Payload</CardTitle>
-                  <CardDescription>The entire SD-JWT Payload</CardDescription>
+                <div className="flex justify-between">
+                  <div className="flex items-baseline space-x-2">
+                    <CardTitle>Payload</CardTitle>
+                    <CardDescription>The entire SD-JWT Payload</CardDescription>
+                  </div>
+                  <JsonGraphDialog jwt={decodePayload(token)} title="Payload" />
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -202,11 +206,18 @@ const CreateTab = () => {
           <TabsContent value="sdclaims">
             <Card>
               <CardHeader>
-                <div className="flex items-baseline space-x-2">
-                  <CardTitle>SD Claims</CardTitle>
-                  <CardDescription>
-                    Selectively (un)disclosable claims from the payload
-                  </CardDescription>
+                <div className="flex justify-between">
+                  <div className="flex items-baseline space-x-2">
+                    <CardTitle>SD Claims</CardTitle>
+                    <CardDescription>
+                      Selectively (un)disclosable claims from the payload
+                    </CardDescription>
+                  </div>
+                  <JsonGraphDialog
+                    jwt={sdMap}
+                    title="Selective Disclosure Claims"
+                    description="Selectively (un)disclosable claims from the payload"
+                  />
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">

@@ -19,9 +19,9 @@ import { supportedAlgorithm } from "@meeco/sd-jwt-vc";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import FormInputInfo from "./formInputInfo";
-import { Card, CardDescription } from "./ui/card";
-import { Checkbox } from "./ui/checkbox";
+import FormInputInfo from "../formInputInfo";
+import { Card, CardDescription } from "../ui/card";
+import { Checkbox } from "../ui/checkbox";
 import {
   Form,
   FormControl,
@@ -29,17 +29,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
-import { Label } from "./ui/label";
-import { ScrollArea } from "./ui/scroll-area";
+} from "../ui/form";
+import { Label } from "../ui/label";
+import { ScrollArea } from "../ui/scroll-area";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
-import { Textarea } from "./ui/textarea";
+} from "../ui/select";
+import { Textarea } from "../ui/textarea";
 
 export const PresentationDialog = () => {
   const {
@@ -282,8 +282,8 @@ export const PresentationDialog = () => {
                                 format to be bound the SD-JWT VC. This public
                                 key belongs to the holder of the SD-JWT VC and
                                 will be present in the VC as the value of the{" "}
-                                <b>&apos;cnf&apos;</b> claim. if left blank, the issuer&apos;s
-                                public key will be used.
+                                <b>&apos;cnf&apos;</b> claim. if left blank, the
+                                issuer&apos;s public key will be used.
                               </p>
                             }
                           />
@@ -347,11 +347,11 @@ export const PresentationDialog = () => {
                             <FormInputInfo
                               content={
                                 <p>
-                                  Algorithm used for the holder&apos;s key pair. By
-                                  default the issuer&apos;s key pair algorithm is
-                                  used. If you provide a holder key pair, make
-                                  sure to enter the correct algorithm for the
-                                  key pair.
+                                  Algorithm used for the holder&apos;s key pair.
+                                  By default the issuer&apos;s key pair
+                                  algorithm is used. If you provide a holder key
+                                  pair, make sure to enter the correct algorithm
+                                  for the key pair.
                                 </p>
                               }
                             />

@@ -161,7 +161,7 @@ const GenerateForm = () => {
                 <div className="flex items-center space-x-2">
                   <FormLabel>National ID</FormLabel>
                   <FormDescription>
-                    (National Identifier (TODO add desc))
+                    (National Identifier)
                   </FormDescription>
                 </div>
                 <FormControl>

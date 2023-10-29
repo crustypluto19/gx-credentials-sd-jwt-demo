@@ -20,7 +20,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import FormInputInfo from "../formInputInfo";
-import { Card, CardDescription } from "../ui/card";
+import { Card } from "../ui/card";
 import { Checkbox } from "../ui/checkbox";
 import {
   Form,
@@ -233,7 +233,7 @@ export const PresentationDialog = () => {
                         return (
                           <div
                             key={sdEntry.disclosure}
-                            className="flex items-center space-x-4 rounded-md border p-4 mb-2 hover:border-purple-800 transition-colors"
+                            className="flex items-center space-x-4 rounded-md border p-4 mb-2 hover:border-purple-800 transition-color"
                           >
                             <Checkbox
                               id={sdEntry.disclosure}
@@ -247,15 +247,12 @@ export const PresentationDialog = () => {
                               htmlFor={sdEntry.disclosure}
                               className="flex-1 w-full flex flex-col"
                             >
-                              <div className="flex text-sm font-semibold items-baseline">
-                                {sdEntry.value}
-                                <CardDescription className="text-xs font-normal pl-2">
-                                  Disclosure value
-                                </CardDescription>
+                              <div className="flex text-sm font-semibold items-baseline max-w-full truncate break-words">
+                                <p className="max-w-[10em]">{sdEntry.value}</p>
                               </div>
-                              <span className="text-xs break-all">
+                              <p className="text-xs truncate max-w-[30em]">
                                 {sdEntry.disclosure}
-                              </span>
+                              </p>
                             </Label>
                           </div>
                         );

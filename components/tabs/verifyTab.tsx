@@ -5,6 +5,7 @@ import {
 import { useGlobalContext } from "@/context/globalContext";
 import { decodeHeader, decodeKBJWT, decodePayload } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
+import JsonGraphDialog from "../dialogs/jsonGraphDialog";
 import {
   Card,
   CardContent,
@@ -16,17 +17,6 @@ import { Label } from "../ui/label";
 import { ScrollArea } from "../ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Textarea } from "../ui/textarea";
-import { Graph } from "jsoncrack-react";
-import JsonGraphDialog from "../dialogs/jsonGraphDialog";
-import { Button } from "react-day-picker";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "../ui/dialog";
 
 const VerifyTab = () => {
   const {
@@ -50,7 +40,6 @@ const VerifyTab = () => {
   const [decodedKBJWTHeader, setDecodedKBJWTHeader] = useState("");
   const [decodedKBJWTPayload, setDecodedKBJWTPayload] = useState("");
   const [isHolderKB, _] = useState(holderPubKey && holderPubKey !== pubKey);
-  const graphRef = useRef();
 
   const { mutateAsync: verifySDJWTVC } = useVerifySDJWTVC();
   const { mutateAsync: verifySDJWTVCwithKB } = useVerifySDJWTVCwithKBJWT();
@@ -92,7 +81,8 @@ const VerifyTab = () => {
     }
   };
   const processVerifyResponse = (data: any) => {
-    if (data) {
+    if (Object.keys(data).length === 0) setVerified(false);
+    else if (data) {
       setVerified(!!data);
       try {
         const { sdMap, keyBindingJWT } = data;
@@ -116,7 +106,7 @@ const VerifyTab = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <Textarea
-              placeholder="Paste SD-JWT VC here or create one using the Create tab."
+              placeholder="Paste an SD-JWT VC here or create one using the Create tab."
               className="h-[45vh]"
               value={token}
               onChange={(e) => {

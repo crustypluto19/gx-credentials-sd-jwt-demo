@@ -2,8 +2,9 @@ import { GlobalContext } from "@/context/globalContext";
 import { decodePayload } from "@/lib/utils";
 import { sampleDisclosures, samplePayload } from "@/sample/sample";
 import { useContext } from "react";
-import GenerateForm from "../forms/generateForm";
+import JsonGraphDialog from "../dialogs/jsonGraphDialog";
 import PresentationDialog from "../dialogs/presentDialog";
+import GenerateForm from "../forms/generateForm";
 import {
   Card,
   CardContent,
@@ -14,7 +15,6 @@ import {
 import { Label } from "../ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Textarea } from "../ui/textarea";
-import JsonGraphDialog from "../dialogs/jsonGraphDialog";
 
 const CreateTab = () => {
   const {
@@ -42,7 +42,7 @@ const CreateTab = () => {
               GX Employee Credential
             </TabsTrigger>
             <TabsTrigger value="custom" className="w-full">
-              Custom Payload
+              Custom Payload or Input
             </TabsTrigger>
           </TabsList>
           <TabsContent value="employee" className="w-full">
@@ -65,9 +65,10 @@ const CreateTab = () => {
           >
             <Card>
               <CardHeader>
-                <CardTitle>Custom Payload</CardTitle>
+                <CardTitle>Custom Payload or Input</CardTitle>
                 <CardDescription>
-                  Specify your own payload to be signed (in JSON)
+                  Specify your own payload to be signed (in JSON) or view the
+                  payload created from the GX Employee Credential form.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">

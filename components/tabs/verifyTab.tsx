@@ -225,9 +225,6 @@ const VerifyTab = () => {
             <TabsTrigger value="payload" className="w-full">
               Payload
             </TabsTrigger>
-            <TabsTrigger value="sdclaims" className="w-full">
-              SD Claims
-            </TabsTrigger>
             <TabsTrigger value="disclosures" className="w-full">
               Disclosures
             </TabsTrigger>
@@ -253,33 +250,6 @@ const VerifyTab = () => {
               </CardContent>
             </Card>
           </TabsContent>
-          <TabsContent value="sdclaims">
-            <Card>
-              <CardHeader>
-                <div className="flex justify-between">
-                  <div className="flex items-baseline space-x-2">
-                    <CardTitle>SD Claims</CardTitle>
-                    <CardDescription>
-                      Selectively (un)disclosable claims from the payload
-                    </CardDescription>
-                  </div>
-                  <JsonGraphDialog
-                    jwt={sdMap}
-                    title="Selective Disclosure"
-                    description="Selectively (un)disclosable claims from the payload"
-                  />
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Textarea
-                  placeholder="Select a signing algorithm to create an SD-JWT VC."
-                  className="h-72"
-                  value={sdMap}
-                  readOnly
-                />
-              </CardContent>
-            </Card>
-          </TabsContent>
           <TabsContent value="disclosures">
             <Card>
               <CardHeader>
@@ -289,33 +259,33 @@ const VerifyTab = () => {
                   holder.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <ScrollArea className="max-h-72">
-                  {includedDisclosures.length > 0 ? (
-                    includedDisclosures.map(({ disclosure, value }) => {
-                      return (
-                        <div
-                          key={disclosure}
-                          className="flex items-center space-x-4 rounded-md border p-4 mb-2 mr-3 hover:border-purple-800 transition-colors"
-                        >
-                          <Label className="flex-1 w-full flex flex-col">
-                            <div className="flex text-sm font-semibold items-baseline">
-                              {value}
-                              <CardDescription className="text-xs font-normal pl-2">
-                                Disclosure value
-                              </CardDescription>
-                            </div>
-                            <span className="text-xs break-all">
-                              {disclosure}
-                            </span>
-                          </Label>
-                        </div>
-                      );
-                    })
-                  ) : (
-                    <p>No selectively disclosable claims were disclosed.</p>
-                  )}
-                </ScrollArea>
+              <CardContent className="flex space-y-4">
+                  <ScrollArea className="max-h-96">
+                    {includedDisclosures.length > 0 ? (
+                      includedDisclosures.map(({ disclosure, value }) => {
+                        return (
+                          <div
+                            key={disclosure}
+                            className="flex items-center space-x-4 rounded-md border p-4 mb-2 mr-3 hover:border-purple-800 transition-colors"
+                          >
+                            <Label className="flex-1 w-full flex flex-col">
+                              <div className="flex text-sm font-semibold items-baseline">
+                                {value}
+                                <CardDescription className="text-xs font-normal pl-2">
+                                  Disclosure value
+                                </CardDescription>
+                              </div>
+                              <span className="text-xs break-all">
+                                {disclosure}
+                              </span>
+                            </Label>
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <p>No selectively disclosable claims were disclosed.</p>
+                    )}
+                  </ScrollArea>
               </CardContent>
             </Card>
           </TabsContent>

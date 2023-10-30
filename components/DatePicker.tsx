@@ -1,10 +1,6 @@
 "use client";
 
-import * as React from "react";
-import { format, set } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
-
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -12,8 +8,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Input } from "./ui/input";
+import { cn } from "@/lib/utils";
 import { useInput } from "react-day-picker";
+import { Input } from "./ui/input";
 
 type Props = {
   date: Date;
@@ -22,7 +19,7 @@ type Props = {
 };
 
 export function DatePicker({ withInput = false, date, setDate }: Props) {
-  const { inputProps, dayPickerProps, setSelected } = useInput({
+  const { inputProps, dayPickerProps } = useInput({
     defaultSelected: new Date(),
     fromYear: 1900,
     toYear: new Date().getFullYear(),

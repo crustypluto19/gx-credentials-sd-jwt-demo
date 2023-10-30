@@ -4,7 +4,8 @@ import {
 } from "@/api_queries/verify";
 import { useGlobalContext } from "@/context/globalContext";
 import { decodeHeader, decodeKBJWT, decodePayload } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import JsonGraphDialog from "../dialogs/jsonGraphDialog";
 import {
   Card,
   CardContent,
@@ -53,11 +54,7 @@ const VerifyTab = () => {
 
   useEffect(() => {
     if (keyBindingJWT) {
-      console.log(keyBindingJWT);
-      console.log("triggered");
       const decodedKBJWT = decodeKBJWT(keyBindingJWT);
-      console.log(decodedKBJWT.header!);
-      console.log(decodedKBJWT.payload!);
       setDecodedKBJWTHeader(decodedKBJWT.header!);
       setDecodedKBJWTPayload(decodedKBJWT.payload!);
     }
@@ -84,7 +81,8 @@ const VerifyTab = () => {
     }
   };
   const processVerifyResponse = (data: any) => {
-    if (data) {
+    if (Object.keys(data).length === 0) setVerified(false);
+    else if (data) {
       setVerified(!!data);
       try {
         const { sdMap, keyBindingJWT } = data;
@@ -108,7 +106,7 @@ const VerifyTab = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <Textarea
-              placeholder="Paste SD-JWT VC here or create one using the Create tab."
+              placeholder="Paste an SD-JWT VC here or create one using the Create tab."
               className="h-[45vh]"
               value={token}
               onChange={(e) => {
@@ -227,9 +225,6 @@ const VerifyTab = () => {
             <TabsTrigger value="payload" className="w-full">
               Payload
             </TabsTrigger>
-            <TabsTrigger value="sdclaims" className="w-full">
-              SD Claims
-            </TabsTrigger>
             <TabsTrigger value="disclosures" className="w-full">
               Disclosures
             </TabsTrigger>
@@ -237,9 +232,12 @@ const VerifyTab = () => {
           <TabsContent value="payload">
             <Card>
               <CardHeader>
-                <div className="flex items-baseline space-x-2">
-                  <CardTitle>Payload</CardTitle>
-                  <CardDescription>The entire SD-JWT Payload</CardDescription>
+                <div className="flex justify-between">
+                  <div className="flex items-baseline space-x-2">
+                    <CardTitle>Payload</CardTitle>
+                    <CardDescription>The entire SD-JWT Payload</CardDescription>
+                  </div>
+                  <JsonGraphDialog jwt={decodedPayload} title="Payload" />
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -247,26 +245,6 @@ const VerifyTab = () => {
                   placeholder="Select a signing algorithm to create an SD-JWT VC."
                   className="min-h-[55vh]"
                   value={decodedPayload}
-                  readOnly
-                />
-              </CardContent>
-            </Card>
-          </TabsContent>
-          <TabsContent value="sdclaims">
-            <Card>
-              <CardHeader>
-                <div className="flex items-baseline space-x-2">
-                  <CardTitle>SD Claims</CardTitle>
-                  <CardDescription>
-                    Selectively (un)disclosable claims from the payload
-                  </CardDescription>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Textarea
-                  placeholder="Select a signing algorithm to create an SD-JWT VC."
-                  className="h-72"
-                  value={sdMap}
                   readOnly
                 />
               </CardContent>
@@ -281,33 +259,33 @@ const VerifyTab = () => {
                   holder.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <ScrollArea className="max-h-72">
-                  {includedDisclosures.length > 0 ? (
-                    includedDisclosures.map(({ disclosure, value }) => {
-                      return (
-                        <div
-                          key={disclosure}
-                          className="flex items-center space-x-4 rounded-md border p-4 mb-2 mr-3 hover:border-purple-800 transition-colors"
-                        >
-                          <Label className="flex-1 w-full flex flex-col">
-                            <div className="flex text-sm font-semibold items-baseline">
-                              {value}
-                              <CardDescription className="text-xs font-normal pl-2">
-                                Disclosure value
-                              </CardDescription>
-                            </div>
-                            <span className="text-xs break-all">
-                              {disclosure}
-                            </span>
-                          </Label>
-                        </div>
-                      );
-                    })
-                  ) : (
-                    <p>No selectively disclosable claims were disclosed.</p>
-                  )}
-                </ScrollArea>
+              <CardContent className="flex space-y-4">
+                  <ScrollArea className="max-h-96">
+                    {includedDisclosures.length > 0 ? (
+                      includedDisclosures.map(({ disclosure, value }) => {
+                        return (
+                          <div
+                            key={disclosure}
+                            className="flex items-center space-x-4 rounded-md border p-4 mb-2 mr-3 hover:border-purple-800 transition-colors"
+                          >
+                            <Label className="flex-1 w-full flex flex-col">
+                              <div className="flex text-sm font-semibold items-baseline">
+                                {value}
+                                <CardDescription className="text-xs font-normal pl-2">
+                                  Disclosure value
+                                </CardDescription>
+                              </div>
+                              <span className="text-xs break-all">
+                                {disclosure}
+                              </span>
+                            </Label>
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <p>No selectively disclosable claims were disclosed.</p>
+                    )}
+                  </ScrollArea>
               </CardContent>
             </Card>
           </TabsContent>

@@ -2,8 +2,9 @@ import { GlobalContext } from "@/context/globalContext";
 import { decodePayload } from "@/lib/utils";
 import { sampleDisclosures, samplePayload } from "@/sample/sample";
 import { useContext } from "react";
+import JsonGraphDialog from "../dialogs/jsonGraphDialog";
+import PresentationDialog from "../dialogs/presentDialog";
 import GenerateForm from "../forms/generateForm";
-import PresentationDialog from "../presentDialog";
 import {
   Card,
   CardContent,
@@ -41,7 +42,7 @@ const CreateTab = () => {
               GX Employee Credential
             </TabsTrigger>
             <TabsTrigger value="custom" className="w-full">
-              Custom Payload
+              Custom Payload or Input
             </TabsTrigger>
           </TabsList>
           <TabsContent value="employee" className="w-full">
@@ -64,9 +65,10 @@ const CreateTab = () => {
           >
             <Card>
               <CardHeader>
-                <CardTitle>Custom Payload</CardTitle>
+                <CardTitle>Custom Payload or Input</CardTitle>
                 <CardDescription>
-                  Specify your own payload to be signed (in JSON)
+                  Specify your own payload to be signed (in JSON) or view the
+                  payload created from the GX Employee Credential form.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -184,9 +186,12 @@ const CreateTab = () => {
           <TabsContent value="payload">
             <Card>
               <CardHeader>
-                <div className="flex items-baseline space-x-2">
-                  <CardTitle>Payload</CardTitle>
-                  <CardDescription>The entire SD-JWT Payload</CardDescription>
+                <div className="flex justify-between">
+                  <div className="flex items-baseline space-x-2">
+                    <CardTitle>Payload</CardTitle>
+                    <CardDescription>The entire SD-JWT Payload</CardDescription>
+                  </div>
+                  <JsonGraphDialog jwt={decodePayload(token)} title="Payload" />
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -202,11 +207,18 @@ const CreateTab = () => {
           <TabsContent value="sdclaims">
             <Card>
               <CardHeader>
-                <div className="flex items-baseline space-x-2">
-                  <CardTitle>SD Claims</CardTitle>
-                  <CardDescription>
-                    Selectively (un)disclosable claims from the payload
-                  </CardDescription>
+                <div className="flex justify-between">
+                  <div className="flex items-baseline space-x-2">
+                    <CardTitle>SD Claims</CardTitle>
+                    <CardDescription>
+                      Selectively (un)disclosable claims from the payload
+                    </CardDescription>
+                  </div>
+                  <JsonGraphDialog
+                    jwt={sdMap}
+                    title="Selective Disclosure Claims"
+                    description="Selectively (un)disclosable claims from the payload"
+                  />
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">

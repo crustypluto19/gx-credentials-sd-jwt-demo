@@ -67,7 +67,6 @@ export default function Home() {
 
   useEffect(() => {
     if (payload && signAlg && disclosures && pubKey && privKey) {
-      console.log("top level component change triggered");
       generateSDJWT().then(() => {
         // set SD claims
         if (token) {
